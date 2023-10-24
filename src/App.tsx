@@ -1,35 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface ITodo {
+  id: Number;
+  text: string;
 }
 
-export default App
+// const myTodo: ITodo = { id: 123, text: "Clean my room" };
+// const myTodoArray: ITodo[] = [];
+// myTodoArray.push({
+//   id: 123,
+//   text: "Wash clothers",
+// });
+
+function App() {
+  // const [name, setName] = useState("ram");
+  const [todos, setTodos] = useState<ITodo[]>([]);
+
+  const [text, setText] = useState("");
+
+  // function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  //   setText(e.target.value)
+  // }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const obj = {
+      id: new Date().getTime(),
+      text: text,
+      isDone: false,
+    };
+    // setTodos((prev) => {
+    //   const items = [...prev];
+    //   items.push(obj);
+    //   return items;
+    // });
+
+    setTodos((prev) => [...prev, obj]);
+
+    setText("");
+  }
+
+  return (
+    <div>
+      <h1>my todos</h1>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+      </form>
+
+      <ul>
+        {todos.map((t) => (
+          <li key={t.id.toString()}>{t.text}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
